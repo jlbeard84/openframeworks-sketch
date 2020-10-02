@@ -3,6 +3,7 @@
 ofMesh quad;
 ofShader shader;
 ofImage img;
+float brightness;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -20,10 +21,13 @@ void ofApp::setup(){
     quad.addIndices(indices, 6);
     
     ofDisableArbTex();
+    ofDisableAlphaBlending();
     img.load("parrot.png");
     img.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
     
-    shader.load("scrolling_uv.vert", "texture.frag");
+    brightness = 0.4f;
+    
+    shader.load("uv_passthrough.vert", "texture.frag");
 }
 
 //--------------------------------------------------------------
@@ -36,6 +40,7 @@ void ofApp::draw(){
     shader.begin();
     shader.setUniformTexture("parrotTex", img, 0);
     shader.setUniform1f("time", ofGetElapsedTimef() / 2);
+    shader.setUniform1f("brightness", brightness);
     quad.draw();
     shader.end();
 }
