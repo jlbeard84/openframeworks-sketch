@@ -2,6 +2,7 @@
 
 ofMesh quad;
 ofShader shader;
+ofImage img;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -18,7 +19,10 @@ void ofApp::setup(){
     ofIndexType indices[6] = { 0, 1, 2, 2, 3, 0 };
     quad.addIndices(indices, 6);
     
-    shader.load("uv_passthrough.vert", "uv_vis.frag");
+    ofDisableArbTex();
+    img.load("parrot.png");
+    
+    shader.load("uv_passthrough.vert", "texture.frag");
 }
 
 //--------------------------------------------------------------
@@ -29,7 +33,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     shader.begin();
-    shader.setUniform4f("fragmentColor", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    shader.setUniformTexture("parrotTex", img, 0);
     quad.draw();
     shader.end();
 }
